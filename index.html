@@ -88,7 +88,7 @@
                             <label for="hardener-type" class="block text-sm font-medium text-gray-700">Затверджувач (Б)</label>
                             <select id="hardener-type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#8D9B6A] focus:ring focus:ring-[#8D9B6A] focus:ring-opacity-50">
                                 <option value="285">LH-285 (100 : 40)</option>
-                                <option value="287">LH-287 (100 : 35)</option>
+                                <option value="287">LH-287 (100 : 40)</option>
                             </select>
                         </div>
                         <div class="mt-6 bg-[#F8F9FA] p-4 rounded-lg border">
@@ -343,7 +343,7 @@
             if (hardenerType === '285') {
                 ratio = 0.40;
             } else if (hardenerType === '287') {
-                ratio = 0.35;
+                ratio = 0.40;
             }
 
             const hardenerWeight = resinWeight * ratio;
@@ -362,9 +362,9 @@
         function updatePotLife() {
             const selectedHardener = processHardenerSelect.value;
             if (selectedHardener === '285') {
-                potLifeDisplay.textContent = '~ 45 хвилин';
+                potLifeDisplay.textContent = '~ 30 хвилин (до початку затвердіння)';
             } else {
-                potLifeDisplay.textContent = '~ 90 хвилин';
+                potLifeDisplay.textContent = '~ 70 хвилин (до початку затвердіння, максимально 210 хвилин)';
             }
         }
         processHardenerSelect.addEventListener('change', updatePotLife);
