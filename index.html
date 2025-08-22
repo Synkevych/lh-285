@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Інтерактивний посібник: Епоксидна смола Larit 285</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chosen Palette: Calm Harmony (Beige, Muted Green, Terracotta, Charcoal) -->
+    <!-- Application Structure Plan: A task-oriented dashboard with five main interactive sections accessible via tabs: Preparation, Working Process, Additives, Safety, and Emergency. The new "Additives" tab explains common fillers like Aerosil, Cotton, and Microspheres in an expandable format. -->
+    <!-- Visualization & Content Choices: 1. Mixing Ratios -> Goal: Calculate -> Method: Interactive form. 2. Curing Time -> Goal: Visualize Change -> Method: HTML/CSS timeline with interactive hardener selection. 3. Additives -> Goal: Inform -> Method: Icon-based expandable list. 4. PPE -> Goal: Inform/Checklist -> Method: Icon-based list. 5. Emergencies -> Goal: Quick Info -> Method: Large buttons. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF5;
+            color: #3D405B;
+        }
+        .tab-button {
+            transition: all 0.3s ease;
+            border-bottom: 4px solid transparent;
+        }
+        .tab-button.active {
+            border-bottom-color: #E07A5F;
+            color: #3D405B;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #F0EAD6;
+        }
+        .emergency-btn {
+            transition: all 0.2s ease-in-out;
+        }
+        .emergency-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+        }
+        .info-item.active .info-details {
+            max-height: 200px;
+            opacity: 1;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+        .info-details {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: all 0.4s ease-in-out;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="container mx-auto p-4 md:p-8 max-w-5xl">
+
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-[#3D405B]">Інтерактивний посібник</h1>
+            <p class="text-lg text-[#8185A4] mt-2">Безпечна робота з епоксидною смолою Larit 285</p>
+        </header>
+
+        <div class="w-full card p-4 mb-8">
+            <div id="tabs" class="flex flex-wrap justify-center border-b-2 border-gray-200">
+                <button data-tab="prepare" class="tab-button active text-lg font-semibold py-3 px-6">1. Підготовка</button>
+                <button data-tab="process" class="tab-button text-lg font-semibold py-3 px-6">2. Робота зі смолою</button>
+                <button data-tab="additives" class="tab-button text-lg font-semibold py-3 px-6">3. Додатки</button>
+                <button data-tab="safety" class="tab-button text-lg font-semibold py-3 px-6">4. Безпека</button>
+                <button data-tab="emergency" class="tab-button text-lg font-semibold py-3 px-6">5. Допомога</button>
+            </div>
+        </div>
+
+        <main>
+            <!-- Tab 1: Preparation -->
+            <div id="prepare-content" class="tab-content active">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="card p-6">
+                        <h2 class="text-2xl font-bold mb-4 text-[#8D9B6A]">Калькулятор пропорцій</h2>
+                        <p class="mb-4 text-gray-600">Вкажіть вагу смоли та виберіть затверджувач, щоб уникнути помилок у пропорціях. Змішування проводиться <b>за вагою</b>.</p>
+                        <div>
+                            <label for="resin-weight" class="block text-sm font-medium text-gray-700">Смола Larit 285 (A), грам</label>
+                            <input type="number" id="resin-weight" min="0" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#8D9B6A] focus:ring focus:ring-[#8D9B6A] focus:ring-opacity-50" placeholder="напр. 100">
+                        </div>
+                        <div class="mt-4">
+                            <label for="hardener-type" class="block text-sm font-medium text-gray-700">Затверджувач (Б)</label>
+                            <select id="hardener-type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#8D9B6A] focus:ring focus:ring-[#8D9B6A] focus:ring-opacity-50">
+                                <option value="285">LH-285 (100 : 40)</option>
+                                <option value="287">LH-287 (100 : 35)</option>
+                            </select>
+                        </div>
+                        <div class="mt-6 bg-[#F8F9FA] p-4 rounded-lg border">
+                            <p class="text-gray-700">Потрібно затверджувача:</p>
+                            <p id="hardener-result" class="text-2xl font-bold text-[#E07A5F]">0.00 г</p>
+                            <p class="text-gray-700 mt-2">Загальна вага суміші:</p>
+                            <p id="total-result" class="text-2xl font-bold text-[#3D405B]">0.00 г</p>
+                        </div>
+                    </div>
+                    <div class="card p-6">
+                        <h2 class="text-2xl font-bold mb-4 text-[#8D9B6A]">Чек-лист підготовки</h2>
+                        <ul class="space-y-4">
+                            <li class="flex items-start">
+                                <span class="text-2xl mr-3 text-[#8D9B6A]">🌡️</span>
+                                <div>
+                                    <h3 class="font-semibold">Умови в приміщенні</h3>
+                                    <p class="text-gray-600">Температура: +20-25°C. Вологість: не вище 70%.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-2xl mr-3 text-[#8D9B6A]">✨</span>
+                                <div>
+                                    <h3 class="font-semibold">Підготовка поверхні</h3>
+                                    <p class="text-gray-600">Має бути чистою, сухою та знежиреною (використовуйте ізопропіловий спирт).</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-2xl mr-3 text-[#8D9B6A]">🧪</span>
+                                <div>
+                                    <h3 class="font-semibold">Процес змішування</h3>
+                                    <p class="text-gray-600">Перемішуйте плавно 3-5 хвилин, приділяючи увагу стінкам та дну ємності.</p>
+                                </div>
+                            </li>
+                             <li class="flex items-start">
+                                <span class="text-2xl mr-3 text-[#8D9B6A]">🔥</span>
+                                <div>
+                                    <h3 class="font-semibold">Об'єм суміші</h3>
+                                    <p class="text-gray-600">Чим більший об'єм суміші, тим швидше вона розігрівається і твердне.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 2: Process -->
+            <div id="process-content" class="tab-content">
+                <div class="card p-6">
+                    <h2 class="text-2xl font-bold mb-4 text-[#8D9B6A]">Етапи роботи та полімеризації</h2>
+                    <p class="mb-4 text-gray-600">Розуміння часових рамок є ключовим для успішного результату. Нижче наведено основні етапи життя епоксидної суміші.</p>
+                    <div class="mb-6">
+                        <label for="process-hardener-type" class="block text-sm font-medium text-gray-700">Виберіть затверджувач, щоб побачити відповідний час роботи:</label>
+                        <select id="process-hardener-type" class="mt-1 block w-full md:w-1/2 rounded-md border-gray-300 shadow-sm focus:border-[#8D9B6A] focus:ring focus:ring-[#8D9B6A] focus:ring-opacity-50">
+                            <option value="285">LH-285 (швидший)</option>
+                            <option value="287">LH-287 (повільніший)</option>
+                        </select>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="relative pl-8">
+                            <div class="absolute left-0 top-1 w-4 h-4 bg-[#E07A5F] rounded-full border-4 border-white"></div>
+                            <div class="absolute left-[7px] top-4 w-0.5 h-full bg-gray-300"></div>
+                            <h3 class="font-bold text-lg">Життєздатність суміші (Pot Life)</h3>
+                            <p id="pot-life-display" class="font-semibold text-[#E07A5F]">~ 45 хвилин</p>
+                            <p class="text-gray-600">Час, протягом якого суміш залишається рідкою та придатною для нанесення. Залежить від затверджувача, температури та об'єму.</p>
+                        </div>
+                        <div class="relative pl-8">
+                            <div class="absolute left-0 top-1 w-4 h-4 bg-[#8185A4] rounded-full border-4 border-white"></div>
+                            <div class="absolute left-[7px] top-4 w-0.5 h-full bg-gray-300"></div>
+                            <h3 class="font-bold text-lg">Первинне затвердіння</h3>
+                            <p class="font-semibold text-[#8185A4]">~ 24 години</p>
+                            <p class="text-gray-600">Виріб набирає початкову міцність. Захищайте його від пилу, вологи та дотиків.</p>
+                        </div>
+                        <div class="relative pl-8">
+                            <div class="absolute left-0 top-1 w-4 h-4 bg-[#8D9B6A] rounded-full border-4 border-white"></div>
+                            <h3 class="font-bold text-lg">Повна полімеризація</h3>
+                            <p class="font-semibold text-[#8D9B6A]">~ 7 діб</p>
+                            <p class="text-gray-600">Матеріал досягає максимальної міцності та хімічної стійкості.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tab 3: Additives -->
+            <div id="additives-content" class="tab-content">
+                <div class="card p-6">
+                    <h2 class="text-2xl font-bold mb-4 text-[#8D9B6A]">Поширені додатки та наповнювачі</h2>
+                    <p class="mb-6 text-gray-600">Додатки змінюють властивості смоли, перетворюючи її на спеціалізований клей, шпаклівку або конструкційний матеріал. Додавайте їх після змішування смоли та затверджувача до потрібної консистенції.</p>
+                    <div class="space-y-3">
+                        <div class="info-item border rounded-lg p-4 cursor-pointer" onclick="toggleItem(this)">
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center">
+                                    <span class="text-3xl mr-4">🌫️</span>
+                                    <span class="font-semibold text-lg">Аеросіл (Діоксид кремнію)</span>
+                                </div>
+                                <span class="text-2xl transform transition-transform duration-300">▼</span>
+                            </div>
+                            <div class="info-details text-gray-600">
+                                <p><b>Властивості:</b> Надає тиксотропності (суміш не стікає з вертикальних поверхонь), збільшує міцність на стиск, робить матеріал твердішим в обробці.</p>
+                                <p class="mt-2"><b>Застосування:</b> Структурні клейові шви, галтелі (філети), шпаклівка для вертикальних поверхонь.</p>
+                            </div>
+                        </div>
+                        <div class="info-item border rounded-lg p-4 cursor-pointer" onclick="toggleItem(this)">
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center">
+                                    <span class="text-3xl mr-4">☁️</span>
+                                    <span class="font-semibold text-lg">Бавовняне волокно</span>
+                                </div>
+                                <span class="text-2xl transform transition-transform duration-300">▼</span>
+                            </div>
+                            <div class="info-details text-gray-600">
+                                <p><b>Властивості:</b> Значно загущує смолу, робить її менш крихкою, збільшує міцність клейових швів та стійкість до розтріскування.</p>
+                                <p class="mt-2"><b>Застосування:</b> Створення високоміцного клею, заповнення пустот, ремонт сколів, формування конструкційних з'єднань.</p>
+                            </div>
+                        </div>
+                        <div class="info-item border rounded-lg p-4 cursor-pointer" onclick="toggleItem(this)">
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center">
+                                    <span class="text-3xl mr-4">⚪</span>
+                                    <span class="font-semibold text-lg">Скляні мікросфери</span>
+                                </div>
+                                <span class="text-2xl transform transition-transform duration-300">▼</span>
+                            </div>
+                            <div class="info-details text-gray-600">
+                                <p><b>Властивості:</b> Роблять суміш дуже легкою та простою для шліфування. Створюють гладку пасту. Знижують загальну міцність у порівнянні з іншими наповнювачами.</p>
+                                <p class="mt-2"><b>Застосування:</b> Легка шпаклівка для вирівнювання великих поверхонь, заповнення об'ємів де важлива мала вага, створення моделей.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 4: Safety -->
+            <div id="safety-content" class="tab-content">
+                <div class="card p-6">
+                    <h2 class="text-2xl font-bold mb-4 text-[#8D9B6A]">Засоби індивідуального захисту (ЗІЗ)</h2>
+                    <p class="mb-6 text-gray-600">Робота без ЗІЗ категорично заборонена. Натисніть на кожен пункт, щоб дізнатися деталі.</p>
+                    <div class="space-y-3">
+                        <div class="info-item border rounded-lg p-4 cursor-pointer" onclick="toggleItem(this)">
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center">
+                                    <span class="text-3xl mr-4">💨</span>
+                                    <span class="font-semibold text-lg">Захист дихання</span>
+                                </div>
+                                <span class="text-2xl transform transition-transform duration-300">▼</span>
+                            </div>
+                            <div class="info-details text-gray-600">
+                                Працюйте у добре провітрюваному приміщенні. Використовуйте респіратор з фільтрами від органічних випарів (тип А1 або вище).
+                            </div>
+                        </div>
+                        <div class="info-item border rounded-lg p-4 cursor-pointer" onclick="toggleItem(this)">
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center">
+                                    <span class="text-3xl mr-4">👁️</span>
+                                    <span class="font-semibold text-lg">Захист очей</span>
+                                </div>
+                                <span class="text-2xl transform transition-transform duration-300">▼</span>
+                            </div>
+                            <div class="info-details text-gray-600">
+                                Обов'язково надягайте захисні окуляри закритого типу. Бризки можуть спричинити хімічний опік.
+                            </div>
+                        </div>
+                        <div class="info-item border rounded-lg p-4 cursor-pointer" onclick="toggleItem(this)">
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center">
+                                    <span class="text-3xl mr-4">🧤</span>
+                                    <span class="font-semibold text-lg">Захист рук</span>
+                                </div>
+                                <span class="text-2xl transform transition-transform duration-300">▼</span>
+                            </div>
+                            <div class="info-details text-gray-600">
+                                Використовуйте нітрилові або бутилові рукавички. Латексні не підходять.
+                            </div>
+                        </div>
+                         <div class="info-item border rounded-lg p-4 cursor-pointer" onclick="toggleItem(this)">
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center">
+                                    <span class="text-3xl mr-4">👕</span>
+                                    <span class="font-semibold text-lg">Захисний одяг</span>
+                                </div>
+                                <span class="text-2xl transform transition-transform duration-300">▼</span>
+                            </div>
+                            <div class="info-details text-gray-600">
+                                Одягайте закритий одяг з довгими рукавами, щоб захистити шкіру від випадкових контактів.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tab 5: Emergency -->
+            <div id="emergency-content" class="tab-content">
+                 <div class="text-center mb-6">
+                    <h2 class="text-2xl font-bold text-[#D9534F]">Дії у надзвичайних ситуаціях</h2>
+                    <p class="text-gray-600 mt-2">Виберіть вашу ситуацію, щоб отримати покрокові інструкції.</p>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <button onclick="showEmergency('skin')" class="emergency-btn p-4 card text-center">
+                        <span class="text-4xl">🖐️</span>
+                        <p class="font-semibold mt-2">На шкірі</p>
+                    </button>
+                    <button onclick="showEmergency('eyes')" class="emergency-btn p-4 card text-center">
+                        <span class="text-4xl">👀</span>
+                        <p class="font-semibold mt-2">В очах</p>
+                    </button>
+                    <button onclick="showEmergency('inhalation')" class="emergency-btn p-4 card text-center">
+                        <span class="text-4xl">😮‍💨</span>
+                        <p class="font-semibold mt-2">Вдихання</p>
+                    </button>
+                    <button onclick="showEmergency('spill')" class="emergency-btn p-4 card text-center">
+                        <span class="text-4xl">💧</span>
+                        <p class="font-semibold mt-2">Розлив</p>
+                    </button>
+                </div>
+                <div id="emergency-details" class="card p-6 hidden">
+                    <h3 id="emergency-title" class="text-xl font-bold text-[#D9534F] mb-4"></h3>
+                    <div id="emergency-steps" class="space-y-3 text-gray-700"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const tabs = document.querySelectorAll('.tab-button');
+        const contents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = tab.dataset.tab;
+                
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                contents.forEach(content => {
+                    content.classList.remove('active');
+                    if (content.id === `${target}-content`) {
+                        content.classList.add('active');
+                    }
+                });
+            });
+        });
+
+        const resinWeightInput = document.getElementById('resin-weight');
+        const hardenerTypeSelect = document.getElementById('hardener-type');
+        const hardenerResultP = document.getElementById('hardener-result');
+        const totalResultP = document.getElementById('total-result');
+
+        function calculateProportions() {
+            const resinWeight = parseFloat(resinWeightInput.value) || 0;
+            const hardenerType = hardenerTypeSelect.value;
+            
+            let ratio = 0;
+            if (hardenerType === '285') {
+                ratio = 0.40;
+            } else if (hardenerType === '287') {
+                ratio = 0.35;
+            }
+
+            const hardenerWeight = resinWeight * ratio;
+            const totalWeight = resinWeight + hardenerWeight;
+
+            hardenerResultP.textContent = `${hardenerWeight.toFixed(2)} г`;
+            totalResultP.textContent = `${totalWeight.toFixed(2)} г`;
+        }
+
+        resinWeightInput.addEventListener('input', calculateProportions);
+        hardenerTypeSelect.addEventListener('change', calculateProportions);
+
+        const processHardenerSelect = document.getElementById('process-hardener-type');
+        const potLifeDisplay = document.getElementById('pot-life-display');
+
+        function updatePotLife() {
+            const selectedHardener = processHardenerSelect.value;
+            if (selectedHardener === '285') {
+                potLifeDisplay.textContent = '~ 45 хвилин';
+            } else {
+                potLifeDisplay.textContent = '~ 90 хвилин';
+            }
+        }
+        processHardenerSelect.addEventListener('change', updatePotLife);
+        updatePotLife();
+
+
+        function toggleItem(element) {
+            element.classList.toggle('active');
+            const arrow = element.querySelector('.transform');
+            if (element.classList.contains('active')) {
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                arrow.style.transform = 'rotate(0deg)';
+            }
+        }
+        
+        const supervisorWarning = '<strong>Повідомте керівника:</strong> У будь-якому складному випадку, або при погіршенні самопочуття, негайно повідомте вашого керівника.';
+
+        const emergencyData = {
+            skin: {
+                title: 'Потрапляння на шкіру',
+                steps: [
+                    '<strong>Негайно дійте:</strong> Витріть залишки сухою серветкою.',
+                    '<strong>Промийте водою з милом:</strong> Ретельно промийте уражену ділянку теплою водою з милом.',
+                    '<strong>Не використовуйте розчинники:</strong> Ацетон чи спирт посилять проникнення хікатів у шкіру.',
+                    '<strong>Зверніться до лікаря:</strong> Якщо з\'явилося подразнення, зверніться за медичною допомогою.',
+                    supervisorWarning
+                ]
+            },
+            eyes: {
+                title: 'Потрапляння в очі',
+                steps: [
+                    '<strong>Негайно промийте:</strong> Промивайте око великою кількістю чистої води щонайменше 15 хвилин.',
+                    '<strong>Терміново до лікаря:</strong> Після промивання негайно зверніться до офтальмолога.',
+                    supervisorWarning
+                ]
+            },
+            inhalation: {
+                title: 'Вдихання випарів',
+                steps: [
+                    '<strong>Вийдіть на свіже повітря:</strong> Якщо відчули запаморочення або нудоту, покиньте приміщення.',
+                    '<strong>Зверніться до лікаря:</strong> Якщо симптоми не минають, зверніться за медичною допомогою.',
+                    supervisorWarning
+                ]
+            },
+            spill: {
+                title: 'Випадковий розлив',
+                steps: [
+                    '<strong>Локалізуйте:</strong> Засипте розлиту рідину абсорбентом (пісок, тирса).',
+                    '<strong>Зберіть відходи:</strong> Зберіть забруднений матеріал у герметичний контейнер.',
+                    '<strong>Очистіть поверхню:</strong> Протріть місце розливу ганчіркою з мильним розчином.',
+                    supervisorWarning
+                ]
+            }
+        };
+
+        const emergencyDetailsDiv = document.getElementById('emergency-details');
+        const emergencyTitleH3 = document.getElementById('emergency-title');
+        const emergencyStepsDiv = document.getElementById('emergency-steps');
+
+        function showEmergency(type) {
+            const data = emergencyData[type];
+            emergencyTitleH3.textContent = data.title;
+            emergencyStepsDiv.innerHTML = data.steps.map((step, index) => `<p class="flex items-start"><span class="font-bold text-[#E07A5F] mr-2">${index + 1}.</span><span>${step}</span></p>`).join('');
+            emergencyDetailsDiv.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
