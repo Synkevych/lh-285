@@ -79,16 +79,16 @@
                 <div class="grid md:grid-cols-2 gap-8">
                     <div class="card p-6">
                         <h2 class="text-2xl font-bold mb-4 text-[#8D9B6A]">Калькулятор пропорцій</h2>
-                        <p class="mb-4 text-gray-600">Вкажіть вагу смоли та виберіть затверджувач, щоб уникнути помилок у пропорціях. Змішування проводиться <b>за вагою</b>.</p>
+                        <p class="mb-4 text-gray-600">Вкажіть вагу смоли та виберіть затверджувач, щоб уникнути помилок у пропорціях. Змішування рекомендовано проводити <b>за вагою</b>.</p>
                         <div>
-                            <label for="resin-weight" class="block text-sm font-medium text-gray-700">Смола Larit 285 (A), грам</label>
+                            <label for="resin-weight" class="block text-sm font-medium text-gray-700">Смола Larit 285 (A)</label>
                             <input type="number" id="resin-weight" min="0" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#8D9B6A] focus:ring focus:ring-[#8D9B6A] focus:ring-opacity-50" placeholder="напр. 100">
                         </div>
                         <div class="mt-4">
-                            <label for="hardener-type" class="block text-sm font-medium text-gray-700">Затверджувач (Б)</label>
+                            <label for="hardener-type" class="block text-sm font-medium text-gray-700">Затверджувач LH-285 або LH-287 (Б)</label>
                             <select id="hardener-type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#8D9B6A] focus:ring focus:ring-[#8D9B6A] focus:ring-opacity-50">
-                                <option value="285">LH-285 (100 : 40)</option>
-                                <option value="287">LH-287 (100 : 40)</option>
+                                <option value="285">За вагою LH-285 (100 : 40)</option>
+                                <option value="287">За об'ємом LH-287 (100 : 50)</option>
                             </select>
                         </div>
                         <div class="mt-6 bg-[#F8F9FA] p-4 rounded-lg border">
@@ -327,13 +327,13 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12 text-center py-3">
-                        <div> Coded and built with <span class="heart-icon">❤️</span> by <a href='https://www.linkedin.com/in/synkevych' target='_blank' rel='noopener noreferrer'>Synkevych and AI</a></div>
-                        <div></div>Source code available on
+                        <div> Coded and built with <span class="heart-icon">❤️</span> by <a href='https://www.linkedin.com/in/synkevych' target='_blank' rel='noopener noreferrer'><b>Synkevych</b> and AI</a></div>
+                        <div>Source code available on
                             <a href='https://github.com/Synkevych/lh-285' target='_blank' rel='noopener noreferrer'>
-                                GitHub
+                                <b>GitHub</b>
                             </a>
                         </div>
-                        <div>© Copyright 2025 </div>
+                        <div>© Copyright 2025</div>
                     </div>
                 </div>
             </div>
@@ -373,7 +373,7 @@
             if (hardenerType === '285') {
                 ratio = 0.40;
             } else if (hardenerType === '287') {
-                ratio = 0.40;
+                ratio = 0.50;
             }
 
             const hardenerWeight = resinWeight * ratio;
