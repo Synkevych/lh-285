@@ -79,11 +79,11 @@
                 <div class="grid md:grid-cols-2 gap-8">
                     <div class="card p-6">
                         <h2 class="text-2xl font-bold mb-4 text-[#8D9B6A]">Калькулятор пропорцій</h2>
-                        <p class="mb-4 text-gray-600">Вкажіть вагу смоли та виберіть затверджувач, щоб уникнути помилок у пропорціях. Змішування рекомендовано проводити <b>за вагою</b> вона точніша.</p>
+                        <p class="mb-4 text-gray-600">Вкажіть точну вагу смоли, щоб уникнути помилок у пропорціях. Змішування рекомендовано проводити <b>за вагою</b> вона точніша.</p>
                             <label for="resin-weight" class="block text-sm font-medium text-gray-700">Смола Larit 285 (A) грам</label>
                             <input type="number" id="resin-weight" min="0" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#8D9B6A] focus:ring focus:ring-[#8D9B6A] focus:ring-opacity-50" placeholder="напр. 100">
                         <div class="mt-6 bg-[#F8F9FA] p-4 rounded-lg border">
-                            <p class="text-gray-700">Потрібно затверджувача:</p>
+                            <p class="text-gray-700">Потрібно затверджувача LH-285 або LH-287 (пропорції однакові):</p>
                             <p id="hardener-result" class="text-2xl font-bold text-[#E07A5F]">0.00 г</p>
                             <p class="text-gray-700 mt-2">Загальна вага суміші:</p>
                             <p id="total-result" class="text-2xl font-bold text-[#3D405B]">0.00 г</p>
@@ -361,7 +361,6 @@
         }
 
         resinWeightInput.addEventListener('input', calculateProportions);
-        hardenerTypeSelect.addEventListener('change', calculateProportions);
 
         function toggleItem(element) {
             element.classList.toggle('active');
