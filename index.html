@@ -144,19 +144,13 @@
                 <div class="card p-6">
                     <h2 class="text-2xl font-bold mb-4 text-[#8D9B6A]">Етапи роботи та полімеризації</h2>
                     <p class="mb-4 text-gray-600">Розуміння часових рамок є ключовим для успішного результату. Нижче наведено основні етапи життя епоксидної суміші.</p>
-                    <div class="mb-6">
-                        <label for="process-hardener-type" class="block text-sm font-medium text-gray-700">Виберіть затверджувач, щоб побачити відповідний час роботи:</label>
-                        <select id="process-hardener-type" class="mt-1 block w-full md:w-1/2 rounded-md border-gray-300 shadow-sm focus:border-[#8D9B6A] focus:ring focus:ring-[#8D9B6A] focus:ring-opacity-50">
-                            <option value="285">LH-285 (швидший)</option>
-                            <option value="287">LH-287 (повільніший)</option>
-                        </select>
-                    </div>
                     <div class="space-y-4">
                         <div class="relative pl-8">
                             <div class="absolute left-0 top-1 w-4 h-4 bg-[#E07A5F] rounded-full border-4 border-white"></div>
                             <div class="absolute left-[7px] top-4 w-0.5 h-full bg-gray-300"></div>
                             <h3 class="font-bold text-lg">Життєздатність суміші (Pot Life)</h3>
-                            <p id="pot-life-display" class="font-semibold text-[#E07A5F]">~ 45 хвилин</p>
+                            <p id="pot-life-display" class="font-semibold text-[#E07A5F]">LH-285 (швидший) ~ 40 хвилин (до початку затвердіння)</p>
+                            <p id="pot-life-display" class="font-semibold text-[#E07A5F]">LH-287 (повільніший) ~ 100 хвилин (до початку затвердіння, максимально 210 хвилин)</p>
                             <p class="text-gray-600">Час, протягом якого суміш залишається рідкою та придатною для нанесення. Залежить від затверджувача, температури та об'єму.</p>
                         </div>
                         <div class="relative pl-8">
@@ -368,21 +362,6 @@
 
         resinWeightInput.addEventListener('input', calculateProportions);
         hardenerTypeSelect.addEventListener('change', calculateProportions);
-
-        const processHardenerSelect = document.getElementById('process-hardener-type');
-        const potLifeDisplay = document.getElementById('pot-life-display');
-
-        function updatePotLife() {
-            const selectedHardener = processHardenerSelect.value;
-            if (selectedHardener === '285') {
-                potLifeDisplay.textContent = '~ 30 хвилин (до початку затвердіння)';
-            } else {
-                potLifeDisplay.textContent = '~ 70 хвилин (до початку затвердіння, максимально 210 хвилин)';
-            }
-        }
-        processHardenerSelect.addEventListener('change', updatePotLife);
-        updatePotLife();
-
 
         function toggleItem(element) {
             element.classList.toggle('active');
