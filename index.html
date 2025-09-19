@@ -84,10 +84,14 @@
                             <label for="resin-weight" class="block text-sm font-medium text-gray-700">Смола Larit 285 (A) грам</label>
                             <input type="number" id="resin-weight" min="0" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#8D9B6A] focus:ring focus:ring-[#8D9B6A] focus:ring-opacity-50" placeholder="напр. 100">
                         <div class="mt-6 bg-[#F8F9FA] p-4 rounded-lg border">
-                            <p class="text-gray-700">Потрібно затверджувача (Б) LH-285 або LH-287 (пропорції однакові):</p>
-                            <p id="hardener-result" class="text-2xl font-bold text-[#E07A5F]">0.00 г</p>
-                            <p class="text-gray-700 mt-2">Загальна вага суміші:</p>
-                            <p id="total-result" class="text-2xl font-bold text-[#3D405B]">0.00 г</p>
+                            <p class="text-gray-700">
+                                <label class="text-gray-700" for="hardener-result">Вага затверджувача (г) (Б) LH-285 або LH-287 (пропорції однакові):</label>
+                                <input type="number" id="hardener-result" step="0.01">
+                            </p>
+                            <p class="text-gray-700 mt-2">
+                              <label for="total-result">Загальна вага (г):</label>
+                              <input type="number" id="total-result" step="0.01">
+                            </p>
                         </div>
                     </div>
                     <div class="card p-6">
@@ -346,23 +350,43 @@
             });
         });
 
-        const resinWeightInput = document.getElementById('resin-weight');
-        const hardenerResultP = document.getElementById('hardener-result');
-        const totalResultP = document.getElementById('total-result');
+    const resinInput = document.getElementById("resin-weight");
+    const hardenerInput = document.getElementById("hardener-result");
+    const totalInput = document.getElementById("total-result");
 
-        function calculateProportions() {
-            const resinWeight = parseFloat(resinWeightInput.value) || 0;
-            
-            let ratio = 0.40;
-            const hardenerWeight = resinWeight * ratio;
-            const totalWeight = resinWeight + hardenerWeight;
-            
-            hardenerResultP.textContent = `${hardenerWeight.toFixed(2)} г`;
-            totalResultP.textContent = `${totalWeight.toFixed(2)} г`;
-        }
+    // Співвідношення смола : затверджувач = 100 : 30
+    const ratio = 0.3;
 
-        resinWeightInput.addEventListener('input', calculateProportions);
+    function updateFromResin() {
+      const resin = parseFloat(resinInput.value) || 0;
+      const hardener = resin * ratio;
+      const total = resin + hardener;
 
+      hardenerInput.value = hardener.toFixed(2);
+      totalInput.value = total.toFixed(2);
+    }
+
+    function updateFromHardener() {
+      const hardener = parseFloat(hardenerInput.value) || 0;
+      const resin = hardener / ratio;
+      const total = resin + hardener;
+
+      resinInput.value = resin.toFixed(2);
+      totalInput.value = total.toFixed(2);
+    }
+
+    function updateFromTotal() {
+      const total = parseFloat(totalInput.value) || 0;
+      const resin = total / (1 + ratio);
+      const hardener = resin * ratio;
+
+      resinInput.value = resin.toFixed(2);
+      hardenerInput.value = hardener.toFixed(2);
+    }
+
+    resinInput.addEventListener("input", updateFromResin);
+    hardenerInput.addEventListener("input", updateFromHardener);
+    totalInput.addEventListener("input", updateFromTotal);
         function toggleItem(element) {
             element.classList.toggle('active');
             const arrow = element.querySelector('.transform');
